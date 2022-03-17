@@ -2,8 +2,8 @@ package by.epam.task3.parser.impl;
 
 import by.epam.task3.composite.Composite;
 import by.epam.task3.composite.CompositeType;
+import by.epam.task3.exception.CustomTextException;
 import by.epam.task3.parser.CompositeParser;
-import by.vlad.jwd_task3.exception.CustomException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +17,7 @@ public class CompositeParseImpl implements CompositeParser {
     private final ParserHandler handler = new ParagraphParserHandler();
 
     @Override
-    public Composite parseFromFile(String path) throws CustomException {
+    public Composite parseFromFile(String path) throws CustomTextException {
         String text;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             text = bufferedReader.lines()
@@ -26,7 +26,7 @@ public class CompositeParseImpl implements CompositeParser {
                     .collect(Collectors.joining());
         } catch (IOException e) {
             logger.error("IOException during read data from file", e);
-            throw new CustomException("IOException during read data from file", e);
+            throw new CustomTextException("IOException during read data from file", e);
         }
         return parse(text);
     }
