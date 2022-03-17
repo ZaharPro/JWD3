@@ -1,9 +1,9 @@
 package by.epam.task3.parser.impl;
 
-import by.epam.task3.util.BitOperation;
-import by.epam.task3.util.BitOperationImpl;
-import by.epam.task3.composite.Composite;
-import by.epam.task3.composite.CompositeType;
+import by.epam.task3.composite.TextComponent;
+import by.epam.task3.interpreter.BitOperation;
+import by.epam.task3.interpreter.BitOperationImpl;
+import by.epam.task3.composite.TextComponentType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +22,10 @@ public class LexemeParserHandler extends ParserHandler {
         nextHandler = new WordParserHandler();
     }
 
-    public void parse(Composite paragraph, String text) {
-        List<Composite> lexemes = Arrays.stream(LEXEME_DELIMITER_PATTERN.split(text))
+    public void parse(TextComponent paragraph, String text) {
+        List<TextComponent> lexemes = Arrays.stream(LEXEME_DELIMITER_PATTERN.split(text))
                 .map(lexemeText -> {
-                    Composite lexeme = new Composite(CompositeType.LEXEME);
+                    TextComponent lexeme = new TextComponent(TextComponentType.LEXEME);
 
                     Matcher matcher = pattern.matcher(lexemeText);
                     if (matcher.find()) {

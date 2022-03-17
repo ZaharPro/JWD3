@@ -1,7 +1,7 @@
 package by.epam.task3.parser.impl;
 
-import by.epam.task3.composite.Composite;
-import by.epam.task3.composite.CompositeType;
+import by.epam.task3.composite.TextComponentType;
+import by.epam.task3.composite.TextComponent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +16,10 @@ public class ParagraphParserHandler extends ParserHandler {
         nextHandler = new SentenceParserHandler();
     }
 
-    public void parse(Composite textResult, String text) {
-        List<Composite> paragraphs = Arrays.stream(PARAGRAPH_DELIMITER_PATTERN.split(text))
+    public void parse(TextComponent textResult, String text) {
+        List<TextComponent> paragraphs = Arrays.stream(PARAGRAPH_DELIMITER_PATTERN.split(text))
                 .map(paragraphText -> {
-                    Composite paragraph = new Composite(CompositeType.PARAGRAPH);
+                    TextComponent paragraph = new TextComponent(TextComponentType.PARAGRAPH);
                     nextHandler.parse(paragraph, paragraphText);
                     return paragraph;
                 })

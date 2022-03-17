@@ -1,4 +1,4 @@
-package by.epam.task3.util;
+package by.epam.task3.interpreter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

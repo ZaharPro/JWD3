@@ -1,8 +1,9 @@
 package by.epam.task3.parser.impl;
 
 
-import by.epam.task3.composite.Composite;
-import by.epam.task3.composite.CompositeType;
+import by.epam.task3.composite.Symbol;
+import by.epam.task3.composite.TextComponentType;
+import by.epam.task3.composite.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,12 @@ public class WordParserHandler extends ParserHandler {
     private static final Pattern WORD_PATTERN = Pattern.compile(WORD_REGEX);
 
     public WordParserHandler() {
-       // this.nextHandler = new LetterParser();
+        this.nextHandler = new LetterParserHandler();
     }
 
     @Override
-    public void parse(Composite component, String text) {
-        List<Composite> words = new ArrayList<>();
+    public void parse(TextComponent component, String text) {
+        List<TextComponent> words = new ArrayList<>();
 
         Matcher matcher = WORD_PUNCTUATION_PATTERN.matcher(text);
         while (matcher.find()) {
@@ -30,12 +31,11 @@ public class WordParserHandler extends ParserHandler {
 
             Matcher wordMather = WORD_PATTERN.matcher(wordText);
             if (wordMather.matches()) {
-                Composite word = new Composite(CompositeType.WORD);
-                word.setString(wordText);
+                TextComponent word = new TextComponent(TextComponentType.WORD);
                 words.add(word);
+                nextHandler.parse(word, wordText);
             } else {
-                Composite punctuation = new Composite(CompositeType.PUNCTUATION);
-                punctuation.setString(Character.toString(wordText.charAt(0)));
+                TextComponent punctuation = new Symbol(TextComponentType.PUNCTUATION, wordText.charAt(0));
                 words.add(punctuation);
             }
         }

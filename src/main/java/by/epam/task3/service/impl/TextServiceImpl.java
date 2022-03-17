@@ -1,7 +1,7 @@
 package by.epam.task3.service.impl;
 
-import by.epam.task3.composite.Composite;
-import by.epam.task3.composite.CompositeType;
+import by.epam.task3.composite.TextComponentType;
+import by.epam.task3.composite.TextComponent;
 import by.epam.task3.exception.CustomTextException;
 import by.epam.task3.service.TextService;
 
@@ -20,19 +20,19 @@ public class TextServiceImpl implements TextService {
     private static final Pattern CONSONANT_PATTERN = Pattern.compile(CONSONANT_REGEX);
 
     @Override
-    public List<Composite> sortParagraphBySentenceCount(Composite text) {
+    public List<TextComponent> sortParagraphBySentenceCount(TextComponent text) {
         return text.getChildren().stream()
                 .sorted(Comparator.comparingInt(o -> o.getChildren().size()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Composite> findSentenceWithLongestWord(Composite text) throws CustomTextException {
+    public List<TextComponent> findSentenceWithLongestWord(TextComponent text) throws CustomTextException {
         OptionalInt longestWordLength = text.getChildren().stream()
                 .flatMap(p -> p.getChildren().stream())
                 .flatMap(s -> s.getChildren().stream())
                 .flatMap(l -> l.getChildren().stream())
-                .filter(w -> w.getType().equals(CompositeType.WORD))
+                .filter(w -> w.getType().equals(TextComponentType.WORD))
                 .mapToInt(w -> w.getChildren().size())
                 .max();
 
@@ -42,23 +42,23 @@ public class TextServiceImpl implements TextService {
                 .flatMap(p -> p.getChildren().stream())
                 .flatMap(s -> s.getChildren().stream()
                         .flatMap(l -> l.getChildren().stream())
-                        .filter(w -> w.getType().equals(CompositeType.WORD))
+                        .filter(w -> w.getType().equals(TextComponentType.WORD))
                         .filter(w -> w.getChildren().size() == maxLength))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Composite> deleteSentencesWithWordsLessThan(Composite text, int countWord) {
-        List<Composite> paragraphList = text.getChildren();
-        List<Composite> sentenceList;
+    public List<TextComponent> deleteSentencesWithWordsLessThan(TextComponent text, int countWord) {
+        List<TextComponent> paragraphList = text.getChildren();
+        List<TextComponent> sentenceList;
 
-        for (Composite paragraph : paragraphList) {
+        for (TextComponent paragraph : paragraphList) {
             sentenceList = paragraph.getChildren();
-            for (Composite sentence : sentenceList) {
+            for (TextComponent sentence : sentenceList) {
                 int countOfWords = 0;
-                for (Composite lexeme : sentence.getChildren()) {
-                    for (Composite word : lexeme.getChildren()) {
-                        if (word.getType().equals(CompositeType.WORD)) {
+                for (TextComponent lexeme : sentence.getChildren()) {
+                    for (TextComponent word : lexeme.getChildren()) {
+                        if (word.getType().equals(TextComponentType.WORD)) {
                             countOfWords++;
                         }
                     }
@@ -72,12 +72,12 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public Map<String, Integer> findCountOfWords(Composite text) {
+    public Map<String, Integer> findCountOfWords(TextComponent text) {
         Map<String, Integer> sameWords = text.getChildren().stream()
                 .flatMap(p -> p.getChildren().stream())
                 .flatMap(s -> s.getChildren().stream())
                 .flatMap(l -> l.getChildren().stream())
-                .filter(w -> w.getType().equals(CompositeType.WORD))
+                .filter(w -> w.getType().equals(TextComponentType.WORD))
                 .map(w -> w.toString().toLowerCase())
                 .collect(Collectors.toMap(str -> str, i -> 1, Integer::sum));
         sameWords.values().removeIf(i -> i == 1);
@@ -85,12 +85,12 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public long countVowelsInText(Composite text) {
+    public long countVowelsInText(TextComponent text) {
         return text.getChildren().stream()
                 .flatMap(p -> p.getChildren().stream())
                 .flatMap(s -> s.getChildren().stream())
                 .flatMap(l -> l.getChildren().stream())
-                .filter(w -> w.getType().equals(CompositeType.WORD))
+                .filter(w -> w.getType().equals(TextComponentType.WORD))
                 .flatMap(w -> w.getChildren().stream())
                 .map(Object::toString)
                 .filter(let -> VOWEL_PATTERN.matcher(let).matches())
@@ -98,12 +98,12 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public long countConsonantsInText(Composite text) {
+    public long countConsonantsInText(TextComponent text) {
         return text.getChildren().stream()
                 .flatMap(p -> p.getChildren().stream())
                 .flatMap(s -> s.getChildren().stream())
                 .flatMap(l -> l.getChildren().stream())
-                .filter(w -> w.getType().equals(CompositeType.WORD))
+                .filter(w -> w.getType().equals(TextComponentType.WORD))
                 .flatMap(w -> w.getChildren().stream())
                 .map(Object::toString)
                 .filter(let -> CONSONANT_PATTERN.matcher(let).matches())

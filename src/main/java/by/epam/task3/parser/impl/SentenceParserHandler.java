@@ -1,7 +1,7 @@
 package by.epam.task3.parser.impl;
 
-import by.epam.task3.composite.Composite;
-import by.epam.task3.composite.CompositeType;
+import by.epam.task3.composite.TextComponentType;
+import by.epam.task3.composite.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ public class SentenceParserHandler extends ParserHandler {
         nextHandler = new LexemeParserHandler();
     }
 
-    public void parse(Composite paragraph, String text) {
-        List<Composite> sentences = new ArrayList<>();
+    public void parse(TextComponent paragraph, String text) {
+        List<TextComponent> sentences = new ArrayList<>();
         Matcher matcher = SENTENCE_PATTERN.matcher(text);
         while (matcher.find()) {
             String sentenceText = matcher.group();
-            Composite sentence = new Composite(CompositeType.SENTENCE);
+            TextComponent sentence = new TextComponent(TextComponentType.SENTENCE);
             sentences.add(sentence);
             nextHandler.parse(sentence, sentenceText);
         }

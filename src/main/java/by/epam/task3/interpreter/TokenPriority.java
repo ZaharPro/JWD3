@@ -1,4 +1,4 @@
-package by.epam.task3.util;
+package by.epam.task3.interpreter;
 
 public enum TokenPriority {
     FIRST_BRACKET("(", 0),
