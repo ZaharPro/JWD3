@@ -2,18 +2,17 @@ package by.epam.task3.exception;
 
 public class CustomTextException extends Exception {
     public CustomTextException() {
-        super();
     }
 
     public CustomTextException(String message) {
         super(message);
     }
 
-    public CustomTextException(String message, Throwable cause) {
-        super(message, cause);
+    public CustomTextException(String message, Exception e) {
+        super(message, e);
     }
 
-    public CustomTextException(Throwable cause) {
-        super(cause);
+    public CustomTextException(Exception e) {
+        super(e);
     }
 }

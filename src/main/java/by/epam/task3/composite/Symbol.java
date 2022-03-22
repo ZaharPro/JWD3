@@ -1,14 +1,13 @@
 package by.epam.task3.composite;
 
-public class Symbol extends TextComponent {
-    private char value;
+import java.util.List;
 
-    public Symbol(TextComponentType type) {
-        super(type);
-    }
+public class Symbol implements TextComponent {
+    private final TextComponentType type;
+    private final char value;
 
     public Symbol(TextComponentType type, char value) {
-        super(type);
+        this.type = type;
         this.value = value;
     }
 
@@ -16,21 +15,33 @@ public class Symbol extends TextComponent {
         return value;
     }
 
-    public void setValue(char value) {
-        this.value = value;
+    @Override
+    public TextComponentType getType() {
+        return type;
     }
+
+    @Override
+    public List<TextComponent> getChildren() {
+        return null;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Symbol symbol = (Symbol) o;
-        return value == symbol.value;
+        return value == symbol.value &&
+                type == symbol.type;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode() * 31 + value;
+        return (type == null ? 0 : type.hashCode()) + value;
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(value);
     }
 }
